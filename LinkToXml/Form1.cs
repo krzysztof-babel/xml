@@ -89,10 +89,47 @@ namespace LinkToXml
             foreach (XElement podelement in podelementyOkno) s += podelement.Name + "\n";
             MessageBox.Show(s);
         }
+        class Osoba
+        {
+            public int Id;
+            public string Imię, Nazwisko;
+            public int NumerTelefonu;
+            public int Wiek;
+        }
+
+        //źródło
+        List<Osoba> listaOsob = new List<Osoba>
+        {
+            new Osoba {Id = 1, Imię = "Jan", Nazwisko = "Kowalski", NumerTelefonu = 987654321, Wiek = 76},
+            new Osoba {Id = 2, Imię = "Janusz", Nazwisko = "Kowalczuk", NumerTelefonu = 987656721, Wiek = 36},
+            new Osoba {Id = 3, Imię = "Janina", Nazwisko = "Kowalska", NumerTelefonu = 987344321, Wiek = 76},
+            new Osoba {Id = 4, Imię = "Natalia", Nazwisko = "Nowak", NumerTelefonu = 987654765, Wiek = 22},
+            new Osoba {Id = 5, Imię = "Urszula", Nazwisko = "Majewska", NumerTelefonu = 658654321, Wiek = 45},
+            new Osoba {Id = 6, Imię = "Teresa", Nazwisko = "Kamińska", NumerTelefonu = 934554321,Wiek=34}
+        };
+        /// <summary>
+        /// To jest metoda, która pobiera osoby z kolekcji i zapisuje je do pliku XML
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
 
         private void button2_Click(object sender, EventArgs e)
         {
-
+            XDocument xml = new XDocument(
+                new XDeclaration("1.0", "utf-8", "yes"),
+                new XElement("ListaOsob",
+                from osoba in listaOsob
+                orderby osoba.Wiek
+                select new XElement("Osoba",
+                new XAttribute("Id", osoba.Id),
+                new XElement("Imię", osoba.Imię),
+                new XElement("Nazwisko", osoba.Nazwisko),
+                new XElement("NumerTelefonu", osoba.NumerTelefonu),
+                new XElement("Wiek", osoba.Wiek)
+                )
+            )
+        );
+            xml.Save("ListaOsob.xml");
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -114,7 +151,14 @@ namespace LinkToXml
 
             //wyświetlenie danych
             string s = "Lista osób pełnoletnich: \n";
-            foreach (Osoba osoba in )
+            foreach (Osoba osoba in listaOsobPelnoletnich) s +=
+                    osoba.Imię + " " + osoba.Nazwisko + " (" + osoba.Wiek + ")\n";
+            MessageBox.Show(s);
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
 
         }
     }

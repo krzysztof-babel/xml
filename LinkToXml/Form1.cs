@@ -159,7 +159,17 @@ namespace LinkToXml
 
         private void button4_Click(object sender, EventArgs e)
         {
+            //pobieranie danych
+            XDocument xml = XDocument.Load("ListaOsob.xml");
+            IEnumerable<string> listaOsobPelnoletnich =
+                from osoba in xml.Descendants("Osoba") where int.Parse(osoba.Element("Wiek").Value) >= 18
+                orderby osoba.Element("Imię").Value
+                select osoba.Element("Imię").Value + " " + osoba.Element("Nawisko").Value;
 
+            //wyświetlanie danych
+            string s = "Lista osób pełnoletnich: \n";
+            foreach (string personalia in listaOsobPelnoletnich) s += personalia + "\n";
+            MessageBox.Show(s);
         }
     }
 }

@@ -171,5 +171,23 @@ namespace LinkToXml
             foreach (string personalia in listaOsobPelnoletnich) s += personalia + "\n";
             MessageBox.Show(s);
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            XDocument xml = XDocument.Load("ListaOsob.xml");
+            IEnumerable<XElement> listaOsob = xml.Descendants("Osoba").Where(osoba =>
+            (osoba.Element("Imię").Value == "Jan" &&
+            osoba.Element("Nazwisko").Value == "Kowalski"));
+
+            if (listaOsob.Count() > 0) listaOsob.First().Element("Wiek").Value = (int.Parse(listaOsob.First().Element("Wiek").Value) + 1).ToString();
+            else
+            {
+                MessageBox.Show("Brak osób o podanym imieniu i nazwisku");
+                return;
+            }
+            xml.Save("Listaosob.xml");
+
+            
+        }
     }
 }
